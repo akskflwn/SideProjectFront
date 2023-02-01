@@ -22,7 +22,7 @@ const Header = () => {
   const logout = async () => {
     try {
       await axios.get("/api/v1/logout");
-      await dispatch(setLogin(false));
+      dispatch(setLogin(false));
       alert("로그아웃 되었습니다😎");
       navigate("/");
     } catch (e) {
