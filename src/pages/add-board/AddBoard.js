@@ -26,11 +26,21 @@ const AddBoard = () => {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const request = new FormData();
-      request.append("title", title);
-      request.append("content", content);
-      request.append("file", image.image_file);
-      await axios.post("/api/v1/boards/create-v2", request);
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      const data = {
+        title: title,
+        content: content,
+      };
+
+      const request = JSON.stringify(data);
+      formData.append(
+        "request",
+        new Blob([request], { type: "application/json" })
+      );
+      formData.append("multipartFile", image.image_file);
+      await axios.post("/api/v1/boards/create-v2", formData);
       window.alert("😎등록이 완료되었습니다😎");
       navigate("/board-list");
     } catch (e) {
