@@ -2,10 +2,9 @@ import "./header.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setLogin } from "../redux/reducers/AuthReducer";
+import { setLogin, setUser } from "../redux/reducers/AuthReducer";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,6 +22,7 @@ const Header = () => {
     try {
       await axios.get("/api/v1/logout");
       dispatch(setLogin(false));
+      dispatch(setUser(0));
       alert("로그아웃 되었습니다😎");
       navigate("/");
     } catch (e) {
@@ -32,6 +32,7 @@ const Header = () => {
       });
     }
   };
+
   return (
     <div className="header-wrapper">
       <div className="header-title">
@@ -40,11 +41,11 @@ const Header = () => {
         </Link>
       </div>
       <div className="header-menu">
-        <Link to="/board-list">게시판</Link>
+        <Link to="/board-list/?page=1">게시판</Link>
         <Link to="/add-board">글쓰기</Link>
         {isAuth ? (
           <>
-            <Link to="/myboard-list">내 게시물</Link>
+            <Link to="/myboard-list/?page=1">내 게시물</Link>
             <Link to="#" onClick={logout}>
               로그아웃
             </Link>

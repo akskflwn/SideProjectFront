@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 // SignUp 컴포넌트 scss 이용
 import "../signUp/signUp.scss";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../../redux/reducers/AuthReducer";
+import { setLogin, setUser } from "../../redux/reducers/AuthReducer";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,6 +34,9 @@ const Login = () => {
         position: "top-center",
         autoClose: 2000,
       });
+      const { data } = await axios.get("api/v1/mypage");
+      console.log(data);
+      dispatch(setUser(data.id));
       // redirectUrl이 쿼리스트링으로 존재하면
       // 원래가고자 했던 페이지로 돌아가기
       setTimeout(() => {
