@@ -5,12 +5,31 @@ import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
-
+import { FiLayers } from "react-icons/fi";
+import { AiOutlineHeart, AiOutlineFire } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
 const BoardList = () => {
   const [pageCount, setPageCount] = useState(0);
   const [boardList, setBoardList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const category = [{ state: "latest" }, { state: "view" }, { state: "like" }];
+  //api 호출을 해야하는디..
+  const getBoardByPreference = async (e) => {
+    const page_number = searchParams.get("page");
+    console.log(e);
+    try {
+      const { data } = await axios.get(
+        `/api/v1/boards/list/${e}?page=${page_number}&size=5`
+      );
+      console.log(data);
+      setBoardList(data.content);
+    } catch (e) {
+      // 서버에서 받은 에러 메시지 출력
+      toast.error(e.response.data.message + "😭", {
+        position: "top-center",
+      });
+    }
+  };
   // 렌더링 되고 한번만 전체 게시물 갯수 가져와서 페이지 카운트 구하기
   // 렌더링 되고 한번만 페이지에 해당하는 게시물 가져오기
   useEffect(() => {
@@ -20,19 +39,34 @@ const BoardList = () => {
       const { data } = await axios.get(
         `/api/v1/boards/list?page=${page_number}&size=5`
       );
-      console.log(data);
       setPageCount(data.totalPages);
       return data;
     };
-    // 현재 페이지에 해당하는 게시물로 상태 변경하기
     getBoardList().then((result) => setBoardList(result.content));
-    // 게시물 전체 갯수 구하기
-    // 페이지 카운트 구하기: (전체 board 갯수) / (한 페이지 갯수) 결과 올림
   }, []);
 
   return (
     <div className="boardList-wrapper">
-      <div className="boardList-header">전체 게시물 📝</div>
+      <div className="boardList-header">
+        <div
+          className="boardList-item"
+          onClick={() => getBoardByPreference("")}
+        >
+          <FiLayers className="icon" />
+          <p>최신순</p>
+        </div>
+        <div
+          className="boardList-item"
+          onClick={() => getBoardByPreference("likes")}
+        >
+          <AiOutlineHeart className="icon2" />
+          <p>좋아요순</p>
+        </div>
+        <div className="boardList-item">
+          <AiOutlineFire className="icon2" />
+          <p>인기순</p>
+        </div>
+      </div>
       <div className="boardList-body">
         {boardList.map((item, index) => (
           <Card
@@ -45,6 +79,7 @@ const BoardList = () => {
             img_url={item.imgUrl}
             view={item.view}
             like={item.likeCount}
+            likeStatus={item.likeStatus}
           />
         ))}
       </div>

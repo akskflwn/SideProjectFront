@@ -131,11 +131,29 @@
     display: flex;
   }
   .board-footer {
-    padding: 0.6rem;
-    font-weight: 200;
     display: flex;
-    color: #282c34;
-    justify-content: space-between;
-    font-size: 1.1rem;
+    justify-content: right;
+    align-items: center;
+
+    .infoItem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .itemImg {
+      width: 28px;
+      height: auto;
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+    .itemImg2 {
+      width: 16px;
+      height: auto;
+      margin-right: 5px;
+    }
+    .views {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 }

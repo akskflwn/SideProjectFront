@@ -41,7 +41,7 @@
   flex-shrink: 0;
   margin: 15px;
   font-family: "Noto Sans KR", sans-serif;
-  border-radius: 10px;
+  border-radius: 1.5rem;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px,
     rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
   background-color: #fff;
@@ -69,6 +69,7 @@
     word-break: break-all;
     overflow: auto;
     padding: 0.6rem;
+    color: #858484;
 
     &::-webkit-scrollbar {
       display: none;
@@ -76,26 +77,43 @@
 
     .card-body-text-title {
       font-size: 1.3rem;
-      color: darkslategray;
+      color: #444444;
       font-weight: bold;
     }
   }
 
   .card-footer {
-    border-top: 0.5px solid black;
+    border-top: 2px solid #cac8c8;
     padding: 0.6rem;
     font-weight: 200;
     display: flex;
-    color: #282c34;
+    color: #00000066;
     font-size: 1.1rem;
     justify-content: space-between;
   }
-  .card-header {
-    padding: 0.6rem;
-    font-weight: 200;
+}
+.card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #858484;
+  .infoItem {
     display: flex;
-    color: #282c34;
-    justify-content: space-between;
-    font-size: 1.1rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .itemImg {
+    width: 28px;
+    height: auto;
+    margin-right: 2px;
+  }
+  .itemImg2 {
+    width: 16px;
+    height: auto;
+    margin-right: 2px;
+  }
+  .views {
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }

@@ -8,6 +8,9 @@ import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import moment from "moment";
+import { toast } from "react-toastify";
+import { BsEye } from "react-icons/bs";
+
 const Board = () => {
   // URL 파라미터 받기 - board의 id
   const { board_id } = useParams();
@@ -23,14 +26,24 @@ const Board = () => {
     const getBoard = async () => {
       const { data } = await axios.get(`/api/v1/boards/${board_id}`);
       console.log(data);
-      console.log(USERID);
-      console.log(isLogin);
       return data;
     };
     getBoard()
       .then((result) => setBoard(result))
       .then(() => setIsLoaded(true));
   }, []);
+
+  const hitLike = async () => {
+    try {
+      await axios.post(`/api/v1/boards/like/${board_id}`);
+      alert("좋아요 완료 되었습니다😎");
+    } catch (e) {
+      // 서버에서 받은 에러 메시지 출력
+      toast.error(e.response.data.message + "😭", {
+        position: "top-center",
+      });
+    }
+  };
   return (
     <React.Fragment>
       {isLoaded && (
@@ -85,10 +98,37 @@ const Board = () => {
             </div>
           </div>
           <hr />
-          <div className="board-footer">
-            <div className="view">조회수 :{board.view}</div>
-            <div className="like">좋아요 :{board.likeCount}</div>
-          </div>
+          <section className="board-footer">
+            <div className="infoItem">
+              <BsEye size={16} color={"#9A9A9A"} />
+              <p className="views">{board.view}</p>
+            </div>
+            {board.likeStatus ? (
+              <>
+                <div className="infoItem">
+                  <img
+                    className="itemImg2"
+                    src="/image/heart_filled.png"
+                    alt="likes"
+                    onClike={hitLike}
+                  />
+                  <p>{board.likeCount}</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="infoItem">
+                  <img
+                    className="itemImg"
+                    src="/image/heart_filled1.png"
+                    alt="likes"
+                    onClike={hitLike}
+                  />
+                  <p>{board.likeCount}</p>
+                </div>
+              </>
+            )}
+          </section>
         </div>
       )}
       {/*modal*/}

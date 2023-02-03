@@ -23,6 +23,7 @@ const MyBoardList = () => {
       const { data } = await axios.get(
         `/api/v1/mypage/board?page=${page_number}&size=5`
       );
+      console.log(data);
       setPageCount(data.totalPages);
       return data;
     };
@@ -44,6 +45,7 @@ const MyBoardList = () => {
             img_url={item.imgUrl}
             view={item.view}
             like={item.likeCount}
+            likeStatus={item.liked}
           />
         ))}
       </div>
