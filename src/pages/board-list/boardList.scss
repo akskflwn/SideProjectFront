@@ -15,22 +15,30 @@
   animation-delay: 0.5s;
   display: flex;
   flex-direction: column;
-  // align-items: center;
   .boardList-header {
+    margin-top: 20px;
+    margin-bottom: -30px;
     margin-left: 100px;
-    color: #444444;
+    color: #868e96;
     font-weight: bold;
     font-size: 2rem;
     display: flex;
     align-items: center;
-    .boardList-item {
+    .boardList-item-active {
       display: flex;
-      justify-content: center;
       align-items: center;
       cursor: pointer;
+      margin-left: 5px;
+      color: #444444;
+    }
+    .boardList-item-notActive {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-left: 5px;
     }
     .icon {
-      margin-left: 30px;
+      margin-left: 40px;
       margin-right: 5px;
     }
     .icon2 {

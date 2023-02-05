@@ -12,16 +12,15 @@ const BoardList = () => {
   const [pageCount, setPageCount] = useState(0);
   const [boardList, setBoardList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const category = [{ state: "latest" }, { state: "view" }, { state: "like" }];
-  //api 호출을 해야하는디..
+  let [click, setClick] = useState("latest");
+
   const getBoardByPreference = async (e) => {
     const page_number = searchParams.get("page");
-    console.log(e);
+    setClick(e);
     try {
       const { data } = await axios.get(
         `/api/v1/boards/list/${e}?page=${page_number}&size=5`
       );
-      console.log(data);
       setBoardList(data.content);
     } catch (e) {
       // 서버에서 받은 에러 메시지 출력
@@ -37,8 +36,9 @@ const BoardList = () => {
     const getBoardList = async () => {
       const page_number = searchParams.get("page");
       const { data } = await axios.get(
-        `/api/v1/boards/list?page=${page_number}&size=5`
+        `/api/v1/boards/list/latest?page=${page_number}&size=5`
       );
+      console.log(data);
       setPageCount(data.totalPages);
       return data;
     };
@@ -49,21 +49,35 @@ const BoardList = () => {
     <div className="boardList-wrapper">
       <div className="boardList-header">
         <div
-          className="boardList-item"
-          onClick={() => getBoardByPreference("")}
+          className={
+            click == "latest"
+              ? "boardList-item-active"
+              : "boardList-item-notActive"
+          }
+          onClick={() => getBoardByPreference("latest")}
         >
           <FiLayers className="icon" />
           <p>최신순</p>
         </div>
         <div
-          className="boardList-item"
+          className={
+            click == "likes"
+              ? "boardList-item-active"
+              : "boardList-item-notActive"
+          }
           onClick={() => getBoardByPreference("likes")}
         >
-          <AiOutlineHeart className="icon2" />
+          <AiOutlineHeart className="icon" />
           <p>좋아요순</p>
         </div>
-        <div className="boardList-item">
-          <AiOutlineFire className="icon2" />
+        <div
+          className={
+            click == "views"
+              ? "boardList-item-active"
+              : "boardList-item-notActive"
+          }
+        >
+          <AiOutlineFire className="icon" />
           <p>인기순</p>
         </div>
       </div>
@@ -78,7 +92,7 @@ const BoardList = () => {
             board_id={item.id}
             img_url={item.imgUrl}
             view={item.view}
-            like={item.likeCount}
+            likeCount={item.likeCount}
             likeStatus={item.likeStatus}
           />
         ))}

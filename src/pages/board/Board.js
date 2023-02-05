@@ -33,17 +33,6 @@ const Board = () => {
       .then(() => setIsLoaded(true));
   }, []);
 
-  const hitLike = async () => {
-    try {
-      await axios.post(`/api/v1/boards/like/${board_id}`);
-      alert("좋아요 완료 되었습니다😎");
-    } catch (e) {
-      // 서버에서 받은 에러 메시지 출력
-      toast.error(e.response.data.message + "😭", {
-        position: "top-center",
-      });
-    }
-  };
   return (
     <React.Fragment>
       {isLoaded && (
@@ -110,7 +99,6 @@ const Board = () => {
                     className="itemImg2"
                     src="/image/heart_filled.png"
                     alt="likes"
-                    onClike={hitLike}
                   />
                   <p>{board.likeCount}</p>
                 </div>
@@ -122,7 +110,6 @@ const Board = () => {
                     className="itemImg"
                     src="/image/heart_filled1.png"
                     alt="likes"
-                    onClike={hitLike}
                   />
                   <p>{board.likeCount}</p>
                 </div>

@@ -50,14 +50,15 @@
   justify-content: space-between;
   transition: width 1s, height 1s, box-shadow 1s;
   cursor: pointer;
-
+  .move {
+    flex-grow: 1;
+    word-break: break-all;
+  }
   .card-body-img {
     width: 100%;
     height: 60%;
 
     img {
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -83,37 +84,42 @@
   }
 
   .card-footer {
-    border-top: 2px solid #cac8c8;
-    padding: 0.6rem;
-    font-weight: 200;
+    border-top: solid #cac8c8;
     display: flex;
-    color: #00000066;
-    font-size: 1.1rem;
-    justify-content: space-between;
+    justify-content: right;
+
+    .infoItem {
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+      margin-top: -15px;
+      margin-bottom: -15px;
+    }
+    .itemImg {
+      width: 27px;
+      height: auto;
+    }
+    .itemImg2 {
+      width: 16px;
+      height: auto;
+      margin: 5px;
+    }
+    .views {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 }
+
 .card-header {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: right;
+
+  margin-right: 20px;
   color: #858484;
   .infoItem {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .itemImg {
-    width: 28px;
-    height: auto;
-    margin-right: 2px;
-  }
-  .itemImg2 {
-    width: 16px;
-    height: auto;
-    margin-right: 2px;
-  }
-  .views {
-    margin-left: 5px;
-    margin-right: 5px;
   }
 }
