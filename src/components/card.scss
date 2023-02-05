@@ -87,7 +87,7 @@
     border-top: solid #cac8c8;
     display: flex;
     justify-content: right;
-
+    color: #858484;
     .infoItem {
       display: flex;
       align-items: center;
@@ -107,6 +107,16 @@
     .views {
       margin-left: 5px;
       margin-right: 5px;
+    }
+    .infoItem-username {
+      display: flex;
+      align-items: center;
+      margin-top: -15px;
+      margin-bottom: -15px;
+      margin-right: 130px;
+      .card-username {
+        margin-left: 5px;
+      }
     }
   }
 }

@@ -61,7 +61,10 @@ export const Card = ({
           </div>
         </div>
         <div className="card-footer">
-          <div>username ㄱㄷ</div>
+          <div className="infoItem-username">
+            <BsEye size={16} color={"#9A9A9A"} />
+            <p className="card-username">{username}</p>
+          </div>
           <div className="infoItem">
             <BsEye size={16} color={"#9A9A9A"} />
             <p className="views">{view}</p>
