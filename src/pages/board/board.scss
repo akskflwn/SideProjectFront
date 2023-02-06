@@ -44,18 +44,6 @@
   }
 }
 
-.edit-delete-button {
-  display: flex;
-  flex-direction: row-reverse;
-  margin-bottom: 0.7rem;
-  button {
-    font-size: 1.2rem;
-  }
-  .delete-button {
-    margin-left: 0.5rem;
-  }
-}
-
 .modal {
   .modal-title {
     font-size: 2rem;
@@ -82,10 +70,14 @@
   font-family: "Noto Sans KR", sans-serif;
   background-color: #fff;
   padding: 4rem;
-
+  .board {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+  }
   .board-header {
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     display: flex;
     .board-header-username {
       font-size: 2rem;
@@ -127,13 +119,16 @@
       }
     }
   }
+  .board-footer {
+  }
   .board-body {
     display: flex;
   }
-  .board-footer {
+  .board-viewsAndLikes {
     display: flex;
     justify-content: right;
     align-items: center;
+    margin-right: 225px;
 
     .infoItem {
       display: flex;

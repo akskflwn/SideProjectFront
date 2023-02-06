@@ -10,7 +10,7 @@ import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefault
 import moment from "moment";
 import { toast } from "react-toastify";
 import { BsEye } from "react-icons/bs";
-
+import Comments from "../../components/Comments";
 const Board = () => {
   // URL 파라미터 받기 - board의 id
   const { board_id } = useParams();
@@ -37,39 +37,69 @@ const Board = () => {
     <React.Fragment>
       {isLoaded && (
         <div className="board-wrapper">
-          {
-            /*
+          <div className="board">
+            <section className="board-viewsAndLikes">
+              <div className="infoItem">
+                <BsEye size={16} color={"#9A9A9A"} />
+                <p className="views">{board.view}</p>
+              </div>
+              {board.likeStatus ? (
+                <>
+                  <div className="infoItem">
+                    <img
+                      className="itemImg2"
+                      src="/image/heart_filled.png"
+                      alt="likes"
+                    />
+                    <p>{board.likeCount}</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="infoItem">
+                    <img
+                      className="itemImg"
+                      src="/image/heart_filled1.png"
+                      alt="likes"
+                    />
+                    <p>{board.likeCount}</p>
+                  </div>
+                </>
+              )}
+            </section>
+            {
+              /*
               해당 글의 작성자가 로그인을 했을 때만 수정, 삭제 버튼이 보이게 하자.
               로그인을 한 사용자의 jwt-token에서 user의 ID를 추출한 후,
               board(해당 글)의 user의 ID를 비교했을 때 같으면 수정, 삭제 버튼이 보이게 한다.
               ID는 DB에 저장되어 있는 유저의 고유 번호이다.
              */
-            isLogin && USERID === board.userId && (
-              <div className="edit-delete-button">
-                <Button
-                  variant="outlined"
-                  color="error"
-                  endIcon={<DeleteForeverOutlinedIcon />}
-                  className="delete-button"
-                  onClick={() => {
-                    setShow(true);
-                  }}
-                >
-                  삭제
-                </Button>
-                <Button
-                  variant="outlined"
-                  endIcon={<BuildOutlinedIcon />}
-                  onClick={() => {
-                    navigate(`/edit-board/${board_id}`);
-                  }}
-                >
-                  수정
-                </Button>
-              </div>
-            )
-          }
-
+              isLogin && USERID === board.userId && (
+                <div className="edit-delete-button">
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    endIcon={<DeleteForeverOutlinedIcon />}
+                    className="delete-button"
+                    onClick={() => {
+                      setShow(true);
+                    }}
+                  >
+                    삭제
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    endIcon={<BuildOutlinedIcon />}
+                    onClick={() => {
+                      navigate(`/edit-board/${board_id}`);
+                    }}
+                  >
+                    수정
+                  </Button>
+                </div>
+              )
+            }
+          </div>
           <div className="board-header">
             <div className="board-header-username">{board.userNickname}</div>
             <div className="board-header-date">
@@ -87,35 +117,9 @@ const Board = () => {
             </div>
           </div>
           <hr />
-          <section className="board-footer">
-            <div className="infoItem">
-              <BsEye size={16} color={"#9A9A9A"} />
-              <p className="views">{board.view}</p>
-            </div>
-            {board.likeStatus ? (
-              <>
-                <div className="infoItem">
-                  <img
-                    className="itemImg2"
-                    src="/image/heart_filled.png"
-                    alt="likes"
-                  />
-                  <p>{board.likeCount}</p>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="infoItem">
-                  <img
-                    className="itemImg"
-                    src="/image/heart_filled1.png"
-                    alt="likes"
-                  />
-                  <p>{board.likeCount}</p>
-                </div>
-              </>
-            )}
-          </section>
+          <div className="board-footer">
+            <Comments board_id={board_id} replyList={board.replyList} />
+          </div>
         </div>
       )}
       {/*modal*/}
@@ -135,6 +139,9 @@ const Board = () => {
                 color="error"
                 onClick={async () => {
                   setShow(false);
+                  await axios.post(`/api/v1/boards/delete/${board_id}`);
+                  alert("게시물이 삭제되었습니다😊");
+                  window.location.href = "/myboard-list";
                 }}
               >
                 예

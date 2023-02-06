@@ -1,0 +1,74 @@
+.subComments-wrapper {
+  .subComments-header {
+    margin: 1rem 0;
+    display: flex;
+
+    .subComments-header-textarea {
+      flex: 1;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    button {
+      margin-left: 0.5rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  .subComments-body {
+    .subComments-comment {
+      margin: 0.5rem 0;
+      .subComments-username {
+        padding-left: 20px;
+      }
+      .subComments-username-date {
+        display: flex;
+        align-items: baseline;
+        height: 22px;
+        margin-top: -10px;
+        border-bottom: solid #cac8c8;
+        border-width: thin;
+        margin-left: 25px;
+
+        .subComments-date {
+          font-size: 0.8rem;
+          color: lightgray;
+        }
+        .subComments-reply-button {
+          color: lightgray;
+        }
+      }
+
+      .subComments-content {
+        // \n(엔터)를 태그 안의 텍스트에 적용
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin: 0.4rem auto;
+        margin-left: 25px;
+      }
+      .subComments-delete-button {
+        margin-top: -20px;
+        margin-bottom: -30px;
+        justify-content: left;
+      }
+      .subComments-button {
+        color: lightgray;
+      }
+    }
+    .subComments-username {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: baseline;
+      font-weight: 600;
+      justify-content: left;
+    }
+  }
+  .subComments-footer {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+  }
+}

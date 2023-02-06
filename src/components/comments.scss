@@ -1,0 +1,86 @@
+.comments-wrapper {
+  .comments-header {
+    margin: 1rem 0;
+    display: flex;
+
+    .comments-header-textarea {
+      flex: 1;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    button {
+      margin-left: 0.5rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  .comments-body {
+    .comments-comment {
+      margin: 0.5rem 0;
+
+      .comment-username-date {
+        display: flex;
+        align-items: baseline;
+        height: 40px;
+        margin-top: -20px;
+        border-bottom: solid #cac8c8;
+        border-width: thin; /*상・우・하・좌*/
+        .comment-date {
+          color: lightgray;
+          font-size: 0.8rem;
+        }
+        .add-reply-button {
+          color: lightgray;
+        }
+      }
+
+      .comment-content {
+        // \n(엔터)를 태그 안의 텍스트에 적용
+        white-space: pre-wrap;
+        word-break: break-all;
+        margin: 0.4rem auto;
+      }
+      .edit-delete-button {
+        margin-top: -20px;
+        margin-bottom: -30px;
+        justify-content: left;
+
+        .delete-button {
+          font-size: 0.8rem;
+          color: lightgray;
+        }
+      }
+      .comment-username {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: baseline;
+        font-weight: 600;
+        justify-content: left;
+      }
+      .comments-addReply {
+        margin: 1rem 0;
+        display: flex;
+        margin-left: 25px;
+        border-bottom: solid #cac8c8;
+        border-width: thin;
+        padding-bottom: 15px;
+        .comments-addReply-textarea {
+          flex: 1;
+        }
+        .comments-addReply-button {
+          margin-left: 0.5rem;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+  .comments-footer {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+  }
+}
