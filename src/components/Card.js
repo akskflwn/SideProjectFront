@@ -28,7 +28,7 @@ export const Card = ({
       } else {
         setLikeCnt(LikeCnt + 1);
       }
-      await axios.post(`/api/v1/boards/like/${board_id}`);
+      await axios.post(`/api/boards/like/${board_id}`);
 
       alert("좋아요 완료 되었습니다😎");
     } catch (e) {
@@ -57,12 +57,14 @@ export const Card = ({
 
           <div className="card-body-text">
             <div className="card-body-text-title">{title}</div>
-            <div className="card-body-text-content">{content}</div>
+            <div
+              className="card-body-text-content"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
           </div>
         </div>
         <div className="card-footer">
           <div className="infoItem-username">
-            <BsEye size={16} color={"#9A9A9A"} />
             <p className="card-username">{username}</p>
           </div>
           <div className="infoItem">

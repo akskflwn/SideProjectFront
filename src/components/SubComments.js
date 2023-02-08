@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import "./subComments.scss";
 import { BiReply } from "react-icons/bi";
+import { toast, ToastContainer } from "react-toastify";
 
 const SubComments = ({ board_id, subReplyList }) => {
   const [commentList, setCommentList] = useState(subReplyList);
@@ -21,7 +22,13 @@ const SubComments = ({ board_id, subReplyList }) => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [click, setClick] = useState(false);
+  const [replyId, setReplyId] = useState(0);
+  const [UpdateReplyContent, setUpdateReplyContent] = useState("");
 
+  const getTextArea = () => {
+    setClick(!click);
+  };
   const isLogin = () => {
     if (!isAuth) {
       setShow(true);
@@ -31,6 +38,23 @@ const SubComments = ({ board_id, subReplyList }) => {
     setShow(false);
     navigate(`/login?redirectUrl=${location.pathname}`);
   };
+
+  const updateReply = async () => {
+    const reply = {
+      replyId: replyId,
+      content: UpdateReplyContent,
+    };
+    try {
+      await axios.post(`/api/boards/reply/update`, reply);
+      alert("댓글 수정 완료");
+      window.location.reload();
+    } catch (e) {
+      toast.error(e.response.data.message + "😭", {
+        position: "top-center",
+      });
+    }
+  };
+
   return (
     <div className="subComments-wrapper">
       {/* <div className="comments-header"> */}
@@ -50,13 +74,23 @@ const SubComments = ({ board_id, subReplyList }) => {
               </div>
               {isLogin && USERID === reply.userId && (
                 <div className="subComments-delete-button">
-                  <Button className="subComments-button" onClick={() => {}}>
+                  <Button
+                    className="subComments-button"
+                    onClick={() => {
+                      if (window.confirm("댓글을 삭제하시겠습니까?")) {
+                        axios.post(`/api/boards/reply/delete/${reply.id}`);
+                        alert("댓글이 삭제되었습니다😊");
+                        window.location.href = `${board_id}`;
+                      }
+                    }}
+                  >
                     <p>삭제</p>
                   </Button>
                   <Button
                     className="subComments-button"
                     onClick={() => {
-                      //댓글 수정하는 부분//
+                      setReplyId(reply.id);
+                      getTextArea();
                     }}
                   >
                     <p>수정</p>
@@ -64,6 +98,51 @@ const SubComments = ({ board_id, subReplyList }) => {
                 </div>
               )}
             </div>
+            {click && reply.id === replyId ? (
+              <div className="comments-addReply">
+                <TextField
+                  className="comments-addReply-textarea"
+                  maxRows={2}
+                  onChange={(e) => {
+                    setUpdateReplyContent(e.target.value);
+                  }}
+                  multiline
+                  placeholder="수정하실 댓글을 입력해주세요✏️"
+                  defaultValue={reply.content}
+                />
+                {UpdateReplyContent !== "" ? (
+                  <>
+                    <Button
+                      className="comments-addReply-button"
+                      variant="outlined"
+                      onClick={updateReply}
+                    >
+                      등록
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className="comments-addReply-button"
+                    variant="outlined"
+                    disabled={true}
+                  >
+                    등록
+                  </Button>
+                )}
+                <Button
+                  className="comments-addReply-button"
+                  variant="outlined"
+                  onClick={() => {
+                    setReplyId(replyId);
+                    getTextArea();
+                  }}
+                >
+                  취소
+                </Button>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         ))}
       </div>

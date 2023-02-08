@@ -20,7 +20,7 @@ const Header = () => {
   // 비동기로 처리!
   const logout = async () => {
     try {
-      await axios.get("/api/v1/logout");
+      await axios.get("/api/logout");
       dispatch(setLogin(false));
       dispatch(setUser(0));
       alert("로그아웃 되었습니다😎");

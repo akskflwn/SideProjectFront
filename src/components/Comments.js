@@ -13,49 +13,46 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import "./comments.scss";
 import SubComments from "./SubComments";
+import { toast, ToastContainer } from "react-toastify";
 const Comments = ({ board_id, replyList }) => {
-  // 로그인 후 현재 경로로 돌아오기 위해 useLocation 사용
   const location = useLocation();
   const navigate = useNavigate();
   const [commentList, setCommentList] = useState(replyList);
-  // 입력한 댓글 내용
   const [content, setContent] = useState("");
   const isAuth = useSelector((state) => state.Auth.isLogin);
   const USERID = useSelector((state) => state.Auth.id);
-  // 현재 페이지, 전체 페이지 갯수
-  // modal이 보이는 여부 상태
   const [show, setShow] = useState(false);
-  const [showReply, setShowReply] = useState(false);
-  const [showUpdateReply, setShowUpdateReply] = useState(false);
   const [click, setClick] = useState(false);
-
+  const [updateClick, setUpdateClick] = useState(false);
   const [replyId, setReplyId] = useState(0);
-  const [replyContent, setReplyContent] = useState("");
   const [addReplyContent, setAddReplyContent] = useState("");
-  // 페이지에 해당하는 댓글 목록은 page 상태가 변경될 때마다 가져옴
-  // 맨 처음 페이지가 1이므로 처음엔 1페이지에 해당하는 댓글을 가져온다
+  const [UpdateReplyContent, setUpdateReplyContent] = useState("");
 
-  // 댓글 추가하기, 댓글 추가하는 API는 인증 미들웨어가 설정되어 있으므로
-  // HTTP HEADER에 jwt-token 정보를 보내는 interceptor 사용
   const submitSuper = useCallback(async () => {
     const comment = {
       boardId: board_id,
-      // DB에 엔터가 먹힌 상태로 들어가므로 제대로 화면에 띄우기 위해 <br>로 치환
       content: content,
     };
-    // axios interceptor 사용 : 로그인한 사용자만 쓸 수 있다!
-    await axios.post("/api/v1/boards/reply/create/super", comment);
+    await axios.post("/api/boards/reply/create/super", comment);
     alert("댓글 등록 완료");
     window.location.reload();
   }, [content]);
-  const submitSub = useCallback(async () => {
+
+  const submitSub = async () => {
     const sub = {
       replyId: replyId,
       content: addReplyContent,
     };
-    await axios.post("/api/v1/boards/reply/create/sub", sub);
-    alert("댓글 등록 완료");
-  });
+    try {
+      await axios.post("/api/boards/reply/create/sub", sub);
+      alert("댓글 등록 완료");
+      window.location.reload();
+    } catch (e) {
+      toast.error(e.response.data.message + "😭", {
+        position: "top-center",
+      });
+    }
+  };
   /*modal 관련 코드*/
   // 로그인 후 돌아올 수 있게 현재 경로 세팅
   const goLogin = () => {
@@ -69,14 +66,28 @@ const Comments = ({ board_id, replyList }) => {
     }
   };
 
-  const updateReply = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
-    setReplyContent(e.target.value);
+  const updateReply = async () => {
+    const reply = {
+      replyId: replyId,
+      content: UpdateReplyContent,
+    };
+    try {
+      await axios.post(`/api/boards/reply/update`, reply);
+      alert("댓글 수정 완료");
+      window.location.reload();
+    } catch (e) {
+      toast.error(e.response.data.message + "😭", {
+        position: "top-center",
+      });
+    }
   };
 
   const getTextArea = () => {
     setClick(!click);
+  };
+
+  const getUpdateArea = () => {
+    setUpdateClick(!updateClick);
   };
   console.log(replyId);
   console.log(commentList);
@@ -107,8 +118,11 @@ const Comments = ({ board_id, replyList }) => {
                   <Button
                     className="delete-button"
                     onClick={() => {
-                      setReplyId(item.id);
-                      setShowReply(true);
+                      if (window.confirm("댓글을 삭제하시겠습니까?")) {
+                        axios.post(`/api/boards/reply/delete/${item.id}`);
+                        alert("댓글이 삭제되었습니다😊");
+                        window.location.href = `${board_id}`;
+                      }
                     }}
                   >
                     <p>삭제</p>
@@ -116,10 +130,8 @@ const Comments = ({ board_id, replyList }) => {
                   <Button
                     className="delete-button"
                     onClick={() => {
-                      //댓글 수정하는 부분//
                       setReplyId(item.id);
-                      setShowUpdateReply(true);
-                      setReplyContent(item.content);
+                      getUpdateArea();
                     }}
                   >
                     <p>수정</p>
@@ -169,8 +181,50 @@ const Comments = ({ board_id, replyList }) => {
             ) : (
               <></>
             )}
+            {updateClick && item.id === replyId ? (
+              <div className="comments-addReply">
+                <TextField
+                  className="comments-addReply-textarea"
+                  maxRows={2}
+                  onClick={isLogin}
+                  onChange={(e) => {
+                    setUpdateReplyContent(e.target.value);
+                  }}
+                  multiline
+                  defaultValue={item.content}
+                />
+                {UpdateReplyContent !== "" ? (
+                  <>
+                    <Button
+                      className="comments-addReply-button"
+                      variant="outlined"
+                      onClick={updateReply}
+                    >
+                      등록
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className="comments-addReply-button"
+                    variant="outlined"
+                    disabled={true}
+                  >
+                    등록
+                  </Button>
+                )}
+                <Button
+                  className="comments-addReply-button"
+                  variant="outlined"
+                  onClick={getUpdateArea}
+                >
+                  취소
+                </Button>
+              </div>
+            ) : (
+              <></>
+            )}
             <div className="cooments-footer">
-              <SubComments reply_id={item.id} subReplyList={item.children} />
+              <SubComments board_id={board_id} subReplyList={item.children} />
             </div>
           </div>
         ))}
@@ -231,7 +285,7 @@ const Comments = ({ board_id, replyList }) => {
         </DialogContent>
       </Dialog>
 
-      {/*modal*/}
+      {/* modal
       <Dialog open={showReply}>
         <DialogContent style={{ position: "relative" }}>
           <IconButton
@@ -322,7 +376,7 @@ const Comments = ({ board_id, replyList }) => {
             </div>
           </form>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

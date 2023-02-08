@@ -17,7 +17,6 @@ const TextArea = ({ setTitle, setContent, title, content }) => {
         }}
         className="text"
         placeholder="내용을 입력하세요"
-        value={content}
       />
     </div>
   );

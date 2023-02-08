@@ -19,7 +19,7 @@ const BoardList = () => {
     setClick(e);
     try {
       const { data } = await axios.get(
-        `/api/v1/boards/list/${e}?page=${page_number}&size=5`
+        `/api/boards/list/${e}?page=${page_number}&size=5`
       );
       setBoardList(data.content);
     } catch (e) {
@@ -36,7 +36,7 @@ const BoardList = () => {
     const getBoardList = async () => {
       const page_number = searchParams.get("page");
       const { data } = await axios.get(
-        `/api/v1/boards/list/latest?page=${page_number}&size=5`
+        `/api/boards/list/latest?page=${page_number}&size=5`
       );
       console.log(data);
       setPageCount(data.totalPages);
@@ -70,7 +70,7 @@ const BoardList = () => {
           <AiOutlineHeart className="icon" />
           <p>좋아요순</p>
         </div>
-        <div
+        {/* <div
           className={
             click == "views"
               ? "boardList-item-active"
@@ -79,7 +79,7 @@ const BoardList = () => {
         >
           <AiOutlineFire className="icon" />
           <p>인기순</p>
-        </div>
+        </div> */}
       </div>
       <div className="boardList-body">
         {boardList.map((item, index) => (
@@ -90,7 +90,7 @@ const BoardList = () => {
             title={item.title}
             content={item.content}
             board_id={item.id}
-            img_url={item.imgUrl}
+            img_url={item.mainImage}
             view={item.view}
             likeCount={item.likeCount}
             likeStatus={item.likeStatus}

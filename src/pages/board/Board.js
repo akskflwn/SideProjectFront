@@ -24,7 +24,7 @@ const Board = () => {
   // board 가져오기
   useEffect(() => {
     const getBoard = async () => {
-      const { data } = await axios.get(`/api/v1/boards/${board_id}`);
+      const { data } = await axios.get(`/api/boards/board/${board_id}`);
       console.log(data);
       return data;
     };
@@ -93,6 +93,7 @@ const Board = () => {
                     onClick={() => {
                       navigate(`/edit-board/${board_id}`);
                     }}
+                    className="delete-button"
                   >
                     수정
                   </Button>
@@ -106,17 +107,17 @@ const Board = () => {
               {moment(board.created).add(9, "hour").format("YYYY-MM-DD")}
             </div>
           </div>
-          <hr />
           <div className="board-body">
             <div className="board-image">
-              <img src={board.imgUrl} />
-            </div>
-            <div className="board-title-content">
-              <div className="board-title">{board.title}</div>
-              <div className="board-content">{board.content}</div>
+              <img src={board.mainImage} />
             </div>
           </div>
-          <hr />
+          <div className="board-title-content">
+            <div className="board-title">{board.title}</div>
+            <div className="board-content">
+              <div dangerouslySetInnerHTML={{ __html: board.content }} />
+            </div>
+          </div>
           <div className="board-footer">
             <Comments board_id={board_id} replyList={board.replyList} />
           </div>
@@ -139,7 +140,7 @@ const Board = () => {
                 color="error"
                 onClick={async () => {
                   setShow(false);
-                  await axios.post(`/api/v1/boards/delete/${board_id}`);
+                  await axios.post(`/api/boards/delete/${board_id}`);
                   alert("게시물이 삭제되었습니다😊");
                   window.location.href = "/myboard-list";
                 }}

@@ -27,7 +27,7 @@ const EditBoard = () => {
   // title, content, image의 상태를 바꿔줌
   useEffect(() => {
     const getBoard = async () => {
-      const { data } = await axios.get(`/api/v1/boards/${board_id}`);
+      const { data } = await axios.get(`/api/boards/board/${board_id}`);
       console.log(data);
       return data;
     };
@@ -36,9 +36,12 @@ const EditBoard = () => {
       setContent(result.content);
       // 이미지는 파일을 불러올 필요가 없이 미리보기 url만 가져온다.
       // 이미지를 선택하지 않고 올리면 db에 저장되어 있는 이미지를 그대로 사용!
-      setImage({ ...image, preview_URL: result.imgUrl });
+      setImage({ ...image, preview_URL: result.mainImage });
     });
   }, []);
+
+  console.log(title);
+  console.log(content);
 
   const canSubmit = useCallback(() => {
     return content !== "" && title !== "";
@@ -61,7 +64,7 @@ const EditBoard = () => {
       formData.append("multipartFile", image.image_file);
       // 수정할 땐 board_id를 보내자
 
-      await axios.put(`/api/v1/boards/update-v2/${board_id}`, formData);
+      await axios.put(`/api/boards/update/${board_id}`, formData);
       window.alert("😎수정이 완료되었습니다😎");
       // 이전 페이지로 돌아가기
       window.location.href = `/board/${board_id}`;

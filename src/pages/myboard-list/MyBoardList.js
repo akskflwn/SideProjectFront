@@ -24,7 +24,7 @@ const MyBoardList = () => {
     setClick(e);
     try {
       const { data } = await axios.get(
-        `/api/v1/mypage/board/${e}?page=${page_number}&size=5`
+        `/api/mypage/board/${e}?page=${page_number}&size=5`
       );
       setBoardList(data.content);
     } catch (e) {
@@ -41,7 +41,7 @@ const MyBoardList = () => {
     const getBoardList = async () => {
       const page_number = searchParams.get("page");
       const { data } = await axios.get(
-        `/api/v1/mypage/board/latest?page=${page_number}&size=5`
+        `/api/mypage/board/latest?page=${page_number}&size=5`
       );
       console.log(data);
       setPageCount(data.totalPages);
@@ -96,7 +96,7 @@ const MyBoardList = () => {
             title={item.title}
             content={item.content}
             board_id={item.id}
-            img_url={item.imgUrl}
+            img_url={item.boardImage}
             view={item.view}
             likeCount={item.likeCount}
             likeStatus={item.liked}

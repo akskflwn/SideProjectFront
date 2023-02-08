@@ -24,7 +24,7 @@ const Login = () => {
   const submit = async (values) => {
     const { email, password } = values;
     try {
-      await axios.post("/api/v1/login", {
+      await axios.post("/api/login", {
         email,
         password,
       });
@@ -34,7 +34,8 @@ const Login = () => {
         position: "top-center",
         autoClose: 2000,
       });
-      const { data } = await axios.get("api/v1/mypage");
+      const { data } = await axios.get("api/mypage");
+
       console.log(data);
       dispatch(setUser(data.id));
       // redirectUrl이 쿼리스트링으로 존재하면
@@ -48,7 +49,7 @@ const Login = () => {
       }, 2000);
     } catch (e) {
       // 서버에서 받은 에러 메시지 출력
-      toast.error(e.response.data.message + "😭", {
+      toast.error(e.response.data + "😭", {
         position: "top-center",
       });
     }
