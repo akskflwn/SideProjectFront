@@ -55,9 +55,7 @@ Java, SpringBoot, SpringDataJpa, SpringSecurity, MySql, AWS(EC2, RDS)
 
 ![Untitled7](https://user-images.githubusercontent.com/104490310/217543420-e5ea8c11-7035-4b39-9de5-b3eec10979d2.png)
 
-![React_App_-_Chrome_2023-02-08_22-47-09_AdobeExpress]<img src=https://user-images.githubusercontent.com/104490310/217548245-21229f3a-297a-4b3a-ae9e-32768777017e.gif 
- width="100%" height="100%"
->
+
 
 
 # Getting Started with Create React App
